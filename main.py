@@ -72,6 +72,7 @@ def handle_task_done(task, host):
         logger.error(f"{host}->{repr(task.exception())}\n"
                      f"{task.get_stack()}")
         return
+    logger.info(f"{host}已完成")
     if task.result():
         passwd, login_str = task.result()
         result_logger.info(login_str)
