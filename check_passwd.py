@@ -31,7 +31,7 @@ async def check_passwd(host: str, passwd_set: set, port: int = 22, username: str
                 try:
                     connect = await asyncio.wait_for(
                         asyncssh.connect(host, port, username=username, password=i, known_hosts=None),
-                        10)
+                        20)
                     connect.close()
                     error_flag = False
                     return i, connect_str

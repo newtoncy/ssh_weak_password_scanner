@@ -8,9 +8,9 @@ import aiofiles
 import asyncio
 
 
-async def read_ips(file_name: str):
-    async with aiofiles.open(file_name) as f:
-        async for line in f:
+def read_ips(file_name: str):
+    with open(file_name) as f:
+        for line in f:
             line = line.strip()
             if not line:
                 continue

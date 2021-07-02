@@ -15,6 +15,7 @@ from check_passwd import check_passwd
 logger = getLogger()
 done_logger = getLogger("checked")
 result_logger = getLogger("result")
+speed_logger = getLogger("speed")
 
 count = 0
 done = 0
@@ -38,10 +39,9 @@ async def progress_display():
     time1 = 0
     count1 = 0
     while True:
-        print(f"\r尝试密码{count}次，尝试主机{submit}个，"
-              f" 完成{done}个，找到{find}个，"
-              f" 速度{(count - count1) / (time.time() - time1):.1f}每秒",
-              end=f"")
+        speed_logger.info(f"尝试密码{count}次，尝试主机{submit}个，"
+                          f" 完成{done}个，找到{find}个，"
+                          f" 速度{(count - count1) / (time.time() - time1):.1f}每秒")
         time1 = time.time()
         count1 = count
         await asyncio.sleep(1)
@@ -99,7 +99,7 @@ async def main():
         if not unfinished_task_set:
             all_done_event.set()
 
-    async for host in host_iter:
+    for host in host_iter:
         await semaphore.acquire()
         task = asyncio.create_task(check_passwd(host, pw_set, progress_callback=progress_callback))
         submit += 1
