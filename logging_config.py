@@ -66,10 +66,17 @@ LOGGING_DIC = {
             'filename': 'checked.save',
             'encoding': 'utf-8',
         },
+        'gave_up': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',  # 保存到文件
+            'formatter': 'result',
+            'filename': 'gave_up.log',
+            'encoding': 'utf-8',
+        },
     },
     'root': {
         'handlers': ['default', 'console'],  # 这里把上面定义的两个handler都加上，即log数据既写入文件又打印到屏幕
-        'level': 'DEBUG',  # loggers(第一层日志级别关限制)--->handlers(第二层日志级别关卡限制)
+        'level': 'INFO',  # loggers(第一层日志级别关限制)--->handlers(第二层日志级别关卡限制)
     },
     'loggers': {
         'result': {
@@ -86,6 +93,11 @@ LOGGING_DIC = {
             'handlers': ['default', 'console'],
             'level': 'WARNING',
             'propagate': False,
+        },
+        "gave_up": {
+            'handlers': ['gave_up', ],
+            'level': 'DEBUG',
+            'propagate': True,
         }
     },
 }

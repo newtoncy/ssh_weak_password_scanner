@@ -10,15 +10,17 @@ from logging import getLogger
 from check_ssh_open import check_ssh_open
 
 logger = getLogger(__name__)
+gave_up_logger = getLogger("gave_up")
 
 
 async def check_passwd(host: str, passwd_set: set, port: int = 22, username: str = "root", progress_callback=None):
     try:
         if not await check_ssh_open(host, port):
-            logger.info(f"@{host}:{port} 没有打开ssh，放弃")
+            gave_up_logger.info(f"@{host}:{port} 没有打开ssh，放弃")
             return False
     except:
-        logger.exception("检查ssh协议是否打开时发生异常，放弃")
+        logger.exception(f"@{host}:{port}检查ssh协议是否打开时发生异常，放弃")
+        gave_up_logger.info(f"@{host}:{port}检查ssh协议是否打开时发生异常，放弃")
         return False
 
     for i in passwd_set:
@@ -38,11 +40,11 @@ async def check_passwd(host: str, passwd_set: set, port: int = 22, username: str
                     error_flag = False
                     break
                 except (OSError, Error):
-                    logger.exception(f"试密码发生异常")
+                    logger.exception(f"{connect_str} 试密码发生异常")
                 except (TimeoutError, asyncio.TimeoutError):
                     logger.info(f"{connect_str} 超时")
             if error_flag:
-                logger.info(f"{connect_str} 多次失败，放弃")
+                gave_up_logger.info(f"{connect_str} 多次失败，放弃")
                 return False
 
         finally:

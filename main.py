@@ -40,7 +40,7 @@ async def progress_display():
     while True:
         print(f"\r尝试密码{count}次，尝试主机{submit}个，"
               f" 完成{done}个，找到{find}个，"
-              f" 速度{(count - count1) / (time.time() - time1):.1}每秒",
+              f" 速度{(count - count1) / (time.time() - time1):.1f}每秒",
               end=f"")
         time1 = time.time()
         count1 = count
